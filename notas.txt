@@ -1,0 +1,50 @@
+BIBLIOTECAS DO SISTEMA
+
+flask
+flask-login
+flask-bcrypt
+flask-wtf
+flask_sqlalchemy
+email_validator
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///comunidade.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://banco_fakepinterest_zmnf_user:2dH0N1Ms6zIjV9QHlPSS0IMdsOz1MANW@dpg-cpssfg2ju9rs73ah5db0-a.oregon-postgres.render.com/banco_fakepinterest_zmnf"
+
+
+from flask_sqlalchemy import SQLAlchemy
+
+# To be initialized with the Flask app object in app.py.
+db = SQLAlchemy()
+
+
+class Image(db.Model):
+    __tablename__ = 'images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String())
+    img_filename = db.Column(db.String())
+    img_data = db.Column(db.LargeBinary)
+
+    def __repr__(self):
+        return '<image id={},name={}>'.format(self.id, self.name)
+
+
+def get_image(the_id):
+    #return Image.query.filter(Image.id == the_id).first()
+    return Image.query.get_or_404(the_id)
+
+
+def get_images(params=None):
+    if not params:
+        return Image.query.all()
+    else:
+        raise Exception('Filtering not implemented yet.')
+
+
+def add_image(image_dict):
+    new_image = Image(name=image_dict['name'], \
+                        img_filename=image_dict['img_filename'], \
+                        img_data=image_dict['img_data'])
+    db.session.add(new_image)
+    db.session.commit()

@@ -1,6 +1,7 @@
 # criar banco de dados
-from fakepinterest import database, app
+from fakepinterest import db, app
 from fakepinterest.models import Usuario, Foto
 
 with app.app_context():
-    database.create_all()
+    db.drop_all()
+    db.create_all()

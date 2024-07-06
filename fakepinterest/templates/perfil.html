@@ -38,11 +38,9 @@ Perfil - {{ usuario }}
 
     <div class="conteudo">
     {% for foto in usuario.fotos %}
-
         <div class="bloco-imagem">
             <img src="{{ url_for('static', filename='fotos_posts/{}'.format(foto.imagem)) }}" />
         </div>
-
     {% endfor %}
     </div>
 
